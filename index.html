@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/x-icon" href="./media/faviconZelda.ico">
+    <link rel="stylesheet" type="text/css" href="./CSS/FC.css">
+    <link href="https://fonts.googleapis.com/css2?family=REM:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body class="cuerpo">
+    <div class="container">      
+        <div id="titulo" class="titulo"><h1>Contador offline - online</h1></div>  
+        <div id="contador" class="contador">Contador: 0</div>
+    </div>
+
+    <script>
+        var deviceID = "380035000c47343438323536"; 
+        var token = "0ffe75570c5118683591f3f650a98d64fe4a6e75";
+        var urlCount = "https://api.particle.io/v1/devices/" + deviceID + "/count";
+
+        // ------------------------------FUNCION PARA EL CONTADOR----------------------------------------------------- 
+        function callback(data, status){
+            if (status == "success") {
+                var count = parseInt(data.result, 10);
+                document.getElementById("contador").innerText = "Contador: " + count;
+                setTimeout(getReading, 3000); // Llama a getReading cada 3 segundos
+            } else {
+                alert("There was a problem");
+            }
+        }
+
+        function getReading(){
+            $.get(urlCount, {access_token: token}, callback);
+        }
+
+        $(document).ready(function() {
+            getReading();
+        });
+    </script>
+</body>
+</html>
